@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from ATS import ats
-from ATS import deletepdf
+from ATS import rename
 from django.http import HttpResponse, FileResponse
 import os
-deletepdf.delete_pdf_files("./templates")
+
 def index(request):
     if request.method == 'POST':
         new_role = request.POST.get('role')
@@ -23,6 +23,7 @@ def index(request):
 
         ats.skills = updated_skills
         ats.Role = new_role
+        rename.collect_and_rename_pdfs(file_name)
         ats.create_pdf(f'./templates/{file_name}')
         return redirect('download')
 
